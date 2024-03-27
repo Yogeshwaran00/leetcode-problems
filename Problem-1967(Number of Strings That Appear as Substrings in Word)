@@ -1,0 +1,66 @@
+Problem-1967(Number of Strings That Appear as Substrings in Word)
+
+Description:
+Given an array of strings patterns and a string word, return the number of strings in patterns that exist as a substring in word.
+A substring is a contiguous sequence of characters within a string.
+
+Example 1:
+Input: patterns = ["a","abc","bc","d"], word = "abc"
+Output: 3
+Explanation:
+- "a" appears as a substring in "abc".
+- "abc" appears as a substring in "abc".
+- "bc" appears as a substring in "abc".
+- "d" does not appear as a substring in "abc".
+3 of the strings in patterns appear as a substring in word.
+
+Example 2:
+Input: patterns = ["a","b","c"], word = "aaaaabbbbb"
+Output: 2
+Explanation:
+- "a" appears as a substring in "aaaaabbbbb".
+- "b" appears as a substring in "aaaaabbbbb".
+- "c" does not appear as a substring in "aaaaabbbbb".
+2 of the strings in patterns appear as a substring in word.
+
+Example 3:
+Input: patterns = ["a","a","a"], word = "ab"
+Output: 3
+Explanation: Each of the patterns appears as a substring in word "ab".
+ 
+Constraints:
+1 <= patterns.length <= 100
+1 <= patterns[i].length <= 100
+1 <= word.length <= 100
+patterns[i] and word consist of lowercase English letters.
+
+Soltuion:
+class Solution {
+public:
+    int substring(vector<string>& patterns,string word){
+        set<string>store;
+        for(int i=0;i<word.size();i++){
+            string temp;
+            for(int j=i;j<word.size();j++){
+                temp=temp+word[j];
+                store.insert(temp);
+            }
+        }
+        int count=0;
+        for(int i=0;i<patterns.size();i++){
+            if(store.find(patterns[i])!=store.end())count++;
+        }
+        return count;
+    }
+    int numOfStrings(vector<string>& patterns, string word) {
+      return substring(patterns,word);
+    }
+};
+//This below is easy way to find
+// int count = 0;
+//         for(int i=0;i<patterns.size();i++){
+//             if(word.find(patterns[i])!=-1){
+//                 count++;
+//             }
+//         }
+//         return count;
