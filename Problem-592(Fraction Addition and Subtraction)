@@ -1,0 +1,115 @@
+Problem-592(Fraction Addition and Subtraction)
+
+Description:
+Given a string expression representing an expression of fraction addition and subtraction, return the calculation result in string format.
+The final result should be an irreducible fraction. If your final result is an integer, change it to the format of a fraction that has a denominator 1. So in this case, 2 should be converted to 2/1.
+
+Example 1:
+Input: expression = "-1/2+1/2"
+Output: "0/1"
+
+Example 2:
+Input: expression = "-1/2+1/2+1/3"
+Output: "1/3"
+
+Example 3:
+Input: expression = "1/3-1/2"
+Output: "-1/6"
+ 
+Constraints:
+The input string only contains '0' to '9', '/', '+' and '-'. So does the output.
+Each fraction (input and output) has the format ±numerator/denominator. If the first input fraction or the output is positive, then '+' will be omitted.
+The input only contains valid irreducible fractions, where the numerator and denominator of each fraction will always be in the range [1, 10]. If the denominator is 1, it means this fraction is actually an integer in a fraction format defined above.
+The number of given fractions will be in the range [1, 10].
+The numerator and denominator of the final result are guaranteed to be valid and in the range of 32-bit int.
+
+Solution:
+class Solution {
+public:
+    void fun(int &up,int &down){
+        bool check=0;
+        if(up<0){
+            up*=-1;
+            check=1;
+        }
+        // cout<<"In fun"<<up<<" "<<down;
+        int div=2;
+        while(div<up){
+            while(up%div==0 && down%div==0){
+                up/=div;
+                down/=div;
+            }
+            div++;
+        }
+        if(check)up*=-1;
+    }
+    string fractionAddition(string expression) {
+        // return "";
+        int num=0;
+        int den=1;
+        int i=0;
+        while(i<expression.size()){
+            bool check=0;
+            if(expression[i]=='-'){
+                check=1;
+                i++;
+            }
+            else if(expression[i]=='+')
+            i++;
+            int num1=0;
+            while(isdigit(expression[i]) && i<expression.size()){
+                num1=num1*10+(expression[i]-'0');
+                i++;
+            }
+            if(check)num1*=-1;
+            // num.push_back(num1);
+            i++;
+            int num2=0;
+            while(isdigit(expression[i]) && i<expression.size()){
+                num2=num2*10+(expression[i]-'0');
+                i++;
+            }
+            // den.push_back(num1);
+            num=num2*num+den*num1;
+            den=num2*den;
+        }
+        // cout<<num.size()<<" "<<den.size()<<endl;
+        // cout<<up<<'/'<<down;
+        // int up=0;
+        // int down=0;
+        // for(int i=0;i<num.size();i+=2){
+        //     int lnum,rnum;
+        //     if(i+1<num.size())
+        //      lnum=num[i]*den[i+1];
+        //     if(i+1<num.size())
+        //      rnum=num[i+1]*den[i];
+        //     //  cout<<lnum<<" "<<rnum<<endl;
+        //     up+=lnum+rnum;
+        //     if(i+1<num.size())
+        //     down+=den[i]*den[i+1];
+        // }
+        // if(num.size()%2==1){
+        //     int lnum,rnum;
+        //     lnum=up*den[den.size()-1];
+        //     rnum=down*num[num.size()-1];
+        //     up=lnum+rnum;
+        //     down=down*den[den.size()-1];
+        // }
+        // if(up==0){
+        //     return "0/1";
+        // }
+        // if(down==0){
+        //     return "0";
+        // }
+        // cout<<up<<'/'<<down<<endl;
+        // fun(up,down);
+        // cout<<up<<'/'<<down;
+        // return to_string(up)+"/"+to_string(down);
+        // int temp=gcd(abs(num),den);
+        // num/=temp;
+        // den/=temp;
+        fun(num,den);
+        if(num==0)return to_string(num)+"/1";
+        return to_string(num)+"/"+to_string(den);
+    }
+};
