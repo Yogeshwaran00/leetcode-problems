@@ -1,0 +1,99 @@
+Problem-51(N-Queens)
+
+Description:
+The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+Given an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order.
+Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space, respectively.
+
+Example 1:
+Input: n = 4
+Output: [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+Explanation: There exist two distinct solutions to the 4-queens puzzle as shown above
+
+Example 2:
+Input: n = 1
+Output: [["Q"]]
+ 
+Constraints:
+1 <= n <= 9
+
+Solution:
+class Solution {
+public:
+    bool safe(vector<string>&temp,int row,int col,int n){
+        int tempi=row-1;
+        //up
+        while(tempi>=0){
+            if(temp[tempi--][col]=='Q')return 0;
+        }
+        //down
+        tempi=row+1;
+        while(tempi<n){
+            if(temp[tempi++][col]=='Q')return 0;
+        }
+        //right
+        int tempj=col+1;
+        while(tempj<n){
+            if(temp[row][tempj++]=='Q')return 0;
+        }
+        //left
+        tempj=col-1;
+        while(tempj>=0){
+            if(temp[row][tempj--]=='Q')return 0;
+        }
+        //topright
+        tempi=row-1;
+        tempj=col+1;
+        while(tempi>=0 && tempj<n){
+            if(temp[tempi--][tempj++]=='Q')return 0;
+        }
+        //bottomright
+        tempi=row+1;
+        tempj=col+1;
+        while(tempi<n && tempj<n){
+            if(temp[tempi++][tempj++]=='Q')return 0;
+        }
+        //bottomleft
+        tempi=row+1;
+        tempj=col-1;
+        while(tempi<n  && tempj>=0){
+            if(temp[tempi++][tempj--]=='Q')return 0;
+        }
+        //topleft
+        tempi=row-1;
+        tempj=col-1;
+        while(tempi>=0 && tempj>=0){
+            if(temp[tempi--][tempj--]=='Q')return 0;
+        }
+        return 1;
+
+    }
+    void fun(vector<vector<string>>&ans,int work,vector<string>&temp,int n){
+        if(work==n){
+            ans.push_back(temp);
+        //     for(int i=0;i<n;i++){
+        //     cout<<temp[i]<<endl;
+        // }
+        // cout<<endl;
+            return;
+        }
+        for(int i=0;i<n;i++){
+            if(safe(temp,i,work,n)){
+            temp[i][work]='Q';
+            fun(ans,work+1,temp,n);
+            temp[i][work]='.';
+            }
+        
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>>ans;
+        vector<string>board(n);
+        string s(n,'.');
+        for(int i=0;i<n;i++){
+            board[i]=s;
+        }
+        fun(ans,0,board,n);
+        return ans;
+    }
+};
