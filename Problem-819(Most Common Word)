@@ -1,0 +1,83 @@
+Problem-819(Most Common Word)
+
+Description:
+Given a string paragraph and a string array of the banned words banned, return the most frequent word that is not banned. It is guaranteed there is at least one word that is not banned, and that the answer is unique.
+The words in paragraph are case-insensitive and the answer should be returned in lowercase.
+
+Example 1:
+Input: paragraph = "Bob hit a ball, the hit BALL flew far after it was hit.", banned = ["hit"]
+Output: "ball"
+Explanation: 
+"hit" occurs 3 times, but it is a banned word.
+"ball" occurs twice (and no other word does), so it is the most frequent non-banned word in the paragraph. 
+Note that words in the paragraph are not case sensitive,
+that punctuation is ignored (even if adjacent to words, such as "ball,"), 
+and that "hit" isn't the answer even though it occurs more because it is banned.
+
+Example 2:
+Input: paragraph = "a.", banned = []
+Output: "a"
+ 
+Constraints:
+1 <= paragraph.length <= 1000
+paragraph consists of English letters, space ' ', or one of the symbols: "!?',;.".
+0 <= banned.length <= 100
+1 <= banned[i].length <= 10
+banned[i] consists of only lowercase English letters.
+
+Solution:
+class Solution {
+public:
+    string tolow(string temp){
+        // cout<<temp<<" ";
+        string ans="";
+        for(char i:temp){
+            if(i>='A' && i<='Z'){
+                ans+=(i+32);
+            }
+            else ans+=i;
+        }
+        // cout<<ans<<endl;
+        return ans;
+    }
+    string mostCommonWord(string para, vector<string>& ban) {
+        unordered_map<string,int>map;
+        string temp="";
+        for(int i=0;i<para.size();i++){
+            if(para[i]==' '){
+                if(temp=="")continue;
+                temp=tolow(temp);
+                // cout<<"#"<<temp<<endl;
+                map[temp]++;
+                temp="";
+            }
+            else if(para[i]=='!' || para[i]=='?' || para[i]=='\'' || para[i]==',' || para[i]==';' || para[i]=='.'){
+                temp=tolow(temp);
+                // cout<<"*"<<temp<<endl;
+                map[temp]++;
+                temp="";
+            }
+            else
+            temp+=para[i];
+        }
+        if(temp!="") {
+            temp=tolow(temp);
+            map[temp]++;
+        }
+        int hmax=INT_MIN;
+        string ans="";
+        for(auto i:map){
+                if(ban.size()!=0 && find(ban.begin(),ban.end(),i.first)!=ban.end()){
+                    map[i.first]=0;
+                    continue;
+                }
+                if(hmax<i.second){
+                    hmax=i.second;
+                    ans=i.first;
+                }
+                cout<<i.first<<" "<<i.second<<endl;
+
+         }
+        return ans;
+    }
+};
