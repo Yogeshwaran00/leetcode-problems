@@ -1,0 +1,50 @@
+Problem-131(Palindrome Partitioning)
+
+Description:
+Given a string s, partition s such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
+
+Example 1:
+Input: s = "aab"
+Output: [["a","a","b"],["aa","b"]]
+
+Example 2:
+Input: s = "a"
+Output: [["a"]]
+ 
+Constraints:
+1 <= s.length <= 16
+s contains only lowercase English letters.
+
+Solution:
+class Solution {
+public:
+    bool ispali(string s,int left,int right){
+        while(left<right){
+            if(s[left]!=s[right])return 0;
+            else{
+                left++;
+                right--;
+            }
+        }
+        return 1;
+    }
+    void solve(int work,vector<string>& helper,vector<vector<string>>& ans,string s){
+        if(work>=s.size()){
+            ans.push_back(helper);
+            return;
+        }
+    for(int i=work;i<s.size();i++){
+        if(ispali(s,work,i)){
+            helper.push_back(s.substr(work,i-work+1));
+            solve(i+1,helper,ans,s);
+            helper.pop_back();
+        }
+    }
+    }
+    vector<vector<string>> partition(string s) {
+        vector<string>helper;
+        vector<vector<string>>ans;
+        solve(0,helper,ans,s);
+        return ans;
+    }
+};
