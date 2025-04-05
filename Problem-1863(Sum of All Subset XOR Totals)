@@ -41,27 +41,26 @@ Constraints:
 1 <= nums[i] <= 20
 
 Solution:
-class Solution {
-public:
-    void bt(vector<int>& nums,int work,vector<int>& temp,int& ans){
-        if(work==nums.size()){
-            int Zor=0;
-            for(int i=0;i<temp.size();i++){
-                Zor^=temp[i];
+public class Solution {
+    public void fun(int[] nums,int work,ref List<int> hold,ref int ans){
+        if(work==nums.Length){
+            int xor=0;
+            foreach(int i in hold){
+                xor^=i;
             }
-            ans=ans+Zor;
+            ans+=xor;
             return;
         }
-        temp.push_back(nums[work]);
-        bt(nums,work+1,temp,ans);
-        temp.pop_back();
-        bt(nums,work+1,temp,ans);
+        hold.Add(nums[work]);
+        fun(nums,work+1,ref hold,ref ans);
+        hold.RemoveRange(hold.Count-1,1);
+        fun(nums,work+1,ref hold,ref ans);
 
     }
-    int subsetXORSum(vector<int>& nums) {
-        vector<int>st;
+    public int SubsetXORSum(int[] nums) {
+        List<int> hold= new List<int>();
         int ans=0;
-        bt(nums,0,st,ans);
+        fun(nums,0,ref hold,ref ans);
         return ans;
     }
-};
+}
